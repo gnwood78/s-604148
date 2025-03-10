@@ -15,10 +15,12 @@ import {
   Instagram,
   Twitter,
   Facebook,
-  Linkedin
+  Linkedin,
+  LogIn
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const platforms = [
   { icon: Instagram, label: 'Instagram', path: '/instagram' },
@@ -38,15 +40,30 @@ const navItems = [
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   
   const handleNavigation = (path: string) => {
     navigate(path);
   };
 
-  const isActivePath = (path: string) => {
-    return location.pathname === path;
+  const handleSocialLogin = (platform: string) => {
+    // Simulazione di login
+    setIsLoggedIn(true);
+    toast({
+      title: `Accesso effettuato con ${platform}`,
+      description: "Sei stato autenticato con successo",
+    });
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    toast({
+      title: "Logout effettuato",
+      description: "Sei stato disconnesso con successo",
+    });
   };
 
   return (
@@ -71,8 +88,8 @@ const Sidebar = () => {
       {expanded && (
         <div className="py-2 px-3">
           <ProfileHeader 
-            name="Jane Doe" 
-            role="Social Media Manager" 
+            name={isLoggedIn ? "Jane Doe" : "Ospite"} 
+            role={isLoggedIn ? "Social Media Manager" : "Accedi per sbloccare funzionalità"} 
           />
         </div>
       )}
@@ -80,7 +97,7 @@ const Sidebar = () => {
       {!expanded && (
         <div className="flex justify-center py-4">
           <Avatar className="h-8 w-8 border shadow-sm ring-2 ring-transparent transition-all hover:ring-sidebar-primary cursor-pointer">
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>{isLoggedIn ? "JD" : "G"}</AvatarFallback>
           </Avatar>
         </div>
       )}
@@ -92,8 +109,7 @@ const Sidebar = () => {
               key={item.label}
               icon={item.icon}
               label={expanded ? item.label : ''}
-              isActive={isActivePath(item.path)}
-              onClick={() => handleNavigation(item.path)}
+              href={item.path}
             />
           ))}
         </div>
@@ -106,7 +122,7 @@ const Sidebar = () => {
             
             <div className="mb-2">
               <h3 className="px-3 text-xs font-medium text-muted-foreground">
-                Platforms
+                Piattaforme
               </h3>
             </div>
 
@@ -116,10 +132,62 @@ const Sidebar = () => {
                   key={platform.label}
                   icon={platform.icon}
                   label={platform.label}
-                  isActive={isActivePath(platform.path)}
-                  onClick={() => handleNavigation(platform.path)}
+                  href={platform.path}
                 />
               ))}
+            </div>
+            
+            <div className="my-6 mx-3">
+              <div className="h-px bg-border" />
+            </div>
+            
+            <div className="mb-2">
+              <h3 className="px-3 text-xs font-medium text-muted-foreground">
+                Account
+              </h3>
+            </div>
+            
+            <div className="space-y-1 animate-fade-in">
+              {!isLoggedIn ? (
+                <div className="space-y-2 p-3">
+                  <button
+                    onClick={() => handleSocialLogin('Instagram')}
+                    className="w-full bg-instagram text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                  >
+                    <Instagram size={16} />
+                    <span>Accedi con Instagram</span>
+                  </button>
+                  <button
+                    onClick={() => handleSocialLogin('Facebook')}
+                    className="w-full bg-facebook text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                  >
+                    <Facebook size={16} />
+                    <span>Accedi con Facebook</span>
+                  </button>
+                  <button
+                    onClick={() => handleSocialLogin('Twitter')}
+                    className="w-full bg-twitter text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                  >
+                    <Twitter size={16} />
+                    <span>Accedi con Twitter</span>
+                  </button>
+                  <button
+                    onClick={() => handleSocialLogin('LinkedIn')}
+                    className="w-full bg-linkedin text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                  >
+                    <Linkedin size={16} />
+                    <span>Accedi con LinkedIn</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-destructive border border-destructive px-4 py-2 rounded flex items-center justify-center gap-2 hover:bg-destructive/10 transition-colors mx-3"
+                >
+                  <LogIn size={16} className="rotate-180" />
+                  <span>Disconnetti</span>
+                </button>
+              )}
             </div>
           </>
         )}

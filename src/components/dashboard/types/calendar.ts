@@ -11,8 +11,8 @@ export interface CalendarProps {
 }
 
 export const PLATFORM_COLORS = {
-  instagram: 'bg-instagram',
-  twitter: 'bg-twitter',
-  facebook: 'bg-facebook',
-  linkedin: 'bg-linkedin'
+  instagram: 'bg-purple-500',
+  twitter: 'bg-blue-400',
+  facebook: 'bg-blue-600',
+  linkedin: 'bg-blue-800'
 } as const;
