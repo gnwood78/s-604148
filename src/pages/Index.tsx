@@ -8,10 +8,12 @@ import Calendar from '@/components/dashboard/Calendar';
 import PostPreview from '@/components/dashboard/PostPreview';
 import { Users, MessageSquare, Heart, BarChart3, ChevronRight, Sparkles } from 'lucide-react';
 import { addDays } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAnimated, setIsAnimated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,6 +28,10 @@ const Index = () => {
       setIsAnimated(true);
     }
   }, [isLoading]);
+
+  const handleViewAllPosts = () => {
+    navigate('/schedule');
+  };
 
   if (isLoading) {
     return (
@@ -118,7 +124,10 @@ const Index = () => {
               
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-medium">Upcoming Posts</h3>
-                <button className="flex items-center text-xs font-medium text-primary gap-1 hover:underline">
+                <button 
+                  className="flex items-center text-xs font-medium text-primary gap-1 hover:underline"
+                  onClick={handleViewAllPosts}
+                >
                   View All
                   <ChevronRight className="h-3.5 w-3.5" />
                 </button>

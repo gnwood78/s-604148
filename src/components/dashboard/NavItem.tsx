@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface NavItemProps {
   icon: LucideIcon;
@@ -31,12 +32,12 @@ const NavItem = ({ icon: Icon, label, isActive = false, onClick, href }: NavItem
 
   if (href) {
     return (
-      <a 
-        href={href} 
+      <Link 
+        to={href} 
         className="block w-full transition-transform duration-300 hover:translate-x-1"
       >
         {content}
-      </a>
+      </Link>
     );
   }
 

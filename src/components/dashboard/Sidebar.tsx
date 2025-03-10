@@ -18,26 +18,36 @@ import {
   Linkedin
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const platforms = [
-  { icon: Instagram, label: 'Instagram' },
-  { icon: Twitter, label: 'Twitter' },
-  { icon: Facebook, label: 'Facebook' },
-  { icon: Linkedin, label: 'LinkedIn' }
+  { icon: Instagram, label: 'Instagram', path: '/instagram' },
+  { icon: Twitter, label: 'Twitter', path: '/twitter' },
+  { icon: Facebook, label: 'Facebook', path: '/facebook' },
+  { icon: Linkedin, label: 'LinkedIn', path: '/linkedin' }
 ];
 
 const navItems = [
-  { icon: Home, label: 'Dashboard' },
-  { icon: BarChart3, label: 'Analytics' },
-  { icon: Calendar, label: 'Schedule' },
-  { icon: Heart, label: 'Engagement' },
-  { icon: MessagesSquare, label: 'Messages' },
-  { icon: Settings, label: 'Settings' }
+  { icon: Home, label: 'Dashboard', path: '/' },
+  { icon: BarChart3, label: 'Analytics', path: '/analytics' },
+  { icon: Calendar, label: 'Schedule', path: '/schedule' },
+  { icon: Heart, label: 'Engagement', path: '/engagement' },
+  { icon: MessagesSquare, label: 'Messages', path: '/messages' },
+  { icon: Settings, label: 'Settings', path: '/settings' }
 ];
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
-  const [activeItem, setActiveItem] = useState('Dashboard');
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
+
+  const isActivePath = (path: string) => {
+    return location.pathname === path;
+  };
 
   return (
     <div
@@ -82,8 +92,8 @@ const Sidebar = () => {
               key={item.label}
               icon={item.icon}
               label={expanded ? item.label : ''}
-              isActive={activeItem === item.label}
-              onClick={() => setActiveItem(item.label)}
+              isActive={isActivePath(item.path)}
+              onClick={() => handleNavigation(item.path)}
             />
           ))}
         </div>
@@ -106,8 +116,8 @@ const Sidebar = () => {
                   key={platform.label}
                   icon={platform.icon}
                   label={platform.label}
-                  isActive={activeItem === platform.label}
-                  onClick={() => setActiveItem(platform.label)}
+                  isActive={isActivePath(platform.path)}
+                  onClick={() => handleNavigation(platform.path)}
                 />
               ))}
             </div>
