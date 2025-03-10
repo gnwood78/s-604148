@@ -17,6 +17,7 @@ import {
   Facebook,
   Linkedin
 } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const platforms = [
   { icon: Instagram, label: 'Instagram' },
@@ -41,18 +42,18 @@ const Sidebar = () => {
   return (
     <div
       className={cn(
-        "h-screen flex flex-col border-r bg-sidebar transition-all duration-300 ease-apple sticky top-0 left-0 z-30",
+        "h-screen flex flex-col border-r bg-sidebar transition-all duration-500 ease-apple sticky top-0 left-0 z-30",
         expanded ? "w-64" : "w-16"
       )}
     >
       <div className="relative">
         <button
           onClick={() => setExpanded(!expanded)}
-          className="absolute -right-3 top-12 flex h-6 w-6 items-center justify-center rounded-full border bg-background shadow-sm transition-transform duration-200 ease-apple hover:scale-110"
+          className="absolute -right-3 top-12 flex h-6 w-6 items-center justify-center rounded-full border bg-background shadow-sm transition-all duration-300 ease-apple hover:scale-110 hover:shadow-md"
         >
           {expanded ? 
-            <ChevronLeft className="h-3 w-3" /> : 
-            <ChevronRight className="h-3 w-3" />
+            <ChevronLeft className="h-3 w-3 transition-transform duration-300 hover:scale-125" /> : 
+            <ChevronRight className="h-3 w-3 transition-transform duration-300 hover:scale-125" />
           }
         </button>
       </div>
@@ -68,14 +69,14 @@ const Sidebar = () => {
 
       {!expanded && (
         <div className="flex justify-center py-4">
-          <Avatar className="h-8 w-8 border shadow-sm">
+          <Avatar className="h-8 w-8 border shadow-sm ring-2 ring-transparent transition-all hover:ring-sidebar-primary cursor-pointer">
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto py-2 px-3">
-        <div className="space-y-1">
+      <div className="flex-1 overflow-y-auto py-2 px-3 transition-all duration-500">
+        <div className="space-y-1 animate-fade-in">
           {navItems.map((item) => (
             <NavItem
               key={item.label}
@@ -99,7 +100,7 @@ const Sidebar = () => {
               </h3>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 animate-fade-in">
               {platforms.map((platform) => (
                 <NavItem
                   key={platform.label}
@@ -116,16 +117,5 @@ const Sidebar = () => {
     </div>
   );
 };
-
-// Required for component to compile
-const Avatar = ({ className, children }: { className?: string, children?: React.ReactNode }) => (
-  <div className={className}>{children}</div>
-);
-
-const AvatarFallback = ({ children }: { children?: React.ReactNode }) => (
-  <div className="flex h-full w-full items-center justify-center rounded-full bg-muted text-xs font-medium">
-    {children}
-  </div>
-);
 
 export default Sidebar;
